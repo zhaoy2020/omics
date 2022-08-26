@@ -12,6 +12,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 
 import pandas as pd
+import os
 
 # =============================================================================
 # 
@@ -87,10 +88,8 @@ if __name__ == '__main__':
     outputPathButton = tk.Button(root, text='Open Dir.', command=openOutputFile)
     outputPathButton.grid(row=3, column=2, sticky='w')
     
-    def doBlast():
-        import os
-        tem = outputFilePath.get()
-        makedb = "makeblastdb.exe -dbtype "+dbtype.get()+" -in "+ dbFilePath.get()+" -parse_seqids -out "+tem+"/db"+" -logfile "+tem+"/log.txt "
+    def formatDb():
+        makedb = "makeblastdb.exe -dbtype "+dbtype.get()+" -in "+ dbFilePath.get()+" -parse_seqids -out "+os.path.join(os.path.dirname(dbFilePath.get()),os.path.basename(dbFilePath.get()).split('.')[0])
         print("start:\n",makedb)
         
         logText.insert("end", makedb) # 在文本末尾插入字符
@@ -104,11 +103,20 @@ if __name__ == '__main__':
         logText.insert("end", '\n')
         logText.yview_moveto(1)
         logText.update()
+        tk.messagebox.showinfo(title='Blast result', message='makedb is ok.')
+        
+    tk.Button(root, text='format db', command=formatDb).grid(row=4, column=0)
+    
+    def doBlast():
+        
+        tem = outputFilePath.get()
         
         if outfmt.get() == '6':
-            lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+tem+"/db"+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+"\""+outfmt.get()+" qseqid sseqid sgi stitle evalue bitscore pident qcovs length mismatch gapopen qstart qend sstart send"+"\""
+            # lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+tem+"/db"+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+"\""+outfmt.get()+" qseqid sseqid sgi stitle evalue bitscore pident qcovs length mismatch gapopen qstart qend sstart send"+"\""
+            lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+os.path.join(os.path.dirname(dbFilePath.get()),os.path.basename(dbFilePath.get()).split('.')[0])+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+"\""+outfmt.get()+" qseqid sseqid sgi stitle evalue bitscore pident qcovs length mismatch gapopen qstart qend sstart send"+"\""
         else:
-            lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+tem+"/db"+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+outfmt.get()
+            # lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+tem+"/db"+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+outfmt.get()
+            lanuchBlast = blastType.get().split("(")[0]+" -num_threads "+cpuThreads.get()+" -query "+queryFilePath.get()+" -db "+os.path.join(os.path.dirname(dbFilePath.get()),os.path.basename(dbFilePath.get()).split('.')[0])+" -out "+tem+"/results.txt"+" -max_hsps "+maxHsps.get()+" -num_alignments "+numAlignments.get()+" -evalue "+evalue.get()+" -outfmt "+outfmt.get()
         
         print(lanuchBlast)
         logText.insert("end", lanuchBlast)
@@ -146,12 +154,14 @@ if __name__ == '__main__':
         logText.yview_moveto(1)
         logText.update()
         
-        rmTem = "rm "+tem+"/db* "+tem+"/log*"
-        os.system(rmTem)
+# =============================================================================
+#         rmTem = "rm "+tem+"/db* "+tem+"/log*"
+#         os.system(rmTem)
+# =============================================================================
         tk.messagebox.showinfo(title='Blast result', message='Blast is ok.')
         
     # create Blast
-    tk.Button(root, text='Blast', command=doBlast).grid(row=4, column=0)
+    tk.Button(root, text='Blast', command=doBlast).grid(row=4, column=1)
     
     def doDefaultParameters():
         cpuThreads.set('2')
@@ -162,12 +172,12 @@ if __name__ == '__main__':
         dbtype.set('prot')
         blastType.set('blastp(aa/aa)')
     
-    tk.Button(root, text='Default Parameters', command=doDefaultParameters).grid(row=4, column=1)
+    tk.Button(root, text='Default Parameters', command=doDefaultParameters).grid(row=4, column=2)
     
     # create config of parameters
     tk.Label(root, text='CPU threads').grid(row=5, column=0)
     cpuThreads = tk.StringVar()
-    cpuThreadsSpinbox = tk.Spinbox(root, from_=1, to=4, textvariable=cpuThreads)
+    cpuThreadsSpinbox = tk.Spinbox(root, from_=1, to=16, textvariable=cpuThreads)
     cpuThreadsSpinbox.grid(row=5, column=1)
     
     tk.Label(root, text='max_hsps').grid(row=6, column=0)

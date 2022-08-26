@@ -6,3 +6,5 @@ As a third packge which can imported.
 # content
 
 # BlastGUI
+simple is better than complex.
+GUI is better than command line.
