@@ -9,24 +9,15 @@ Created on Mon Aug 15 12:24:09 2022
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+import tkinter.ttk as ttk
 
 import pandas as pd
 import os
 
-if __name__ == '__main__':
-    '''main function'''
-    # window = MainWindow()
-    # create root window
-    root = tk.Tk()
-    root.title('BlastGUI (SmallTools version 2.0)')
-    # 窗口不可扩大
-    root.resizable(0,0)
-# =============================================================================
-#     # 窗口按比例扩大, 暂时还没搞懂
-#     root.grid_rowconfigure(1,weight=1)
-#     root.grid_columnconfigure(0, weight =1)
-# =============================================================================
-    
+from scripts import gomoku
+
+
+def blastGUI(root):
     wsFrame = tk.LabelFrame(root,text='work station')
     wsFrame.pack(side='top')
     
@@ -147,12 +138,12 @@ if __name__ == '__main__':
     tk.Button(btFrame, text='Blast', command=doBlast).grid(row=1, column=1)
     
     def doDefaultParameters():
-        cpuThreads.set('2')
+        cpuThreads.set('7')
         maxHsps.set('1')
         numAlignments.set('1')
         evalue.set('1e-5')
         outfmt.set('6')
-        dbtype.set('prot')
+        dbType.set('prot')
         blastType.set('blastp(aa/aa)')
     tk.Button(btFrame, text='Default Parameters', command=doDefaultParameters).grid(row=1, column=2)
     
@@ -183,14 +174,18 @@ if __name__ == '__main__':
     outfmtSpingbox.grid(row=9, column=1)
     
     tk.Label(dpFrame, text='dbtype').grid(row=0, column=0)
-    dbtype = tk.StringVar()
-    dbtypeSpingbox = tk.Spinbox(dpFrame, values=("prot", "nucl"), textvariable=dbtype)
-    dbtypeSpingbox.grid(row=0, column=1)
+    dbType = tk.StringVar()
+    # dbtypeSpingbox = tk.Spinbox(dpFrame, values=("prot", "nucl"), textvariable=dbtype)
+    # dbtypeSpingbox.grid(row=0, column=1)
+    dbTypeCombobox= ttk.Combobox(dpFrame, textvariable=dbType,values=("prot", "nucl"))
+    dbTypeCombobox.grid(row=0,column=1)
     
     tk.Label(dpFrame, text='blastType').grid(row=10, column=0)
     blastType = tk.StringVar()
-    blastTypeSpingbox = tk.Spinbox(dpFrame, values=("blastn(nt/nt)", "blastx(nt/aa)", 'tblastn(aa/nt)', 'blastp(aa/aa)'), textvariable=blastType)
-    blastTypeSpingbox.grid(row=10, column=1)
+    # blastTypeSpingbox = tk.Spinbox(dpFrame, values=("blastn(nt/nt)", "blastx(nt/aa)", 'tblastn(aa/nt)', 'blastp(aa/aa)'), textvariable=blastType)
+    # blastTypeSpingbox.grid(row=10, column=1)
+    blastTypeCombobox= ttk.Combobox(dpFrame, textvariable=blastType,values=("blastn(nt/nt)", "blastx(nt/aa)", 'tblastn(aa/nt)', 'blastp(aa/aa)'))
+    blastTypeCombobox.grid(row=10,column=1)
     
     # create a text which display the blast program lanuch results
     logFrame = tk.Frame(root)
@@ -198,5 +193,70 @@ if __name__ == '__main__':
     logText = tk.Text(logFrame, width=35, height=5)
     logText.grid(row=1, column=0)
     
+def game(root1):
+    pass
     
-    root.mainloop()
+
+if __name__ == '__main__':
+    '''main function'''
+    # window = MainWindow()
+    # create root window
+    window = tk.Tk()
+    window.title('SmallTools version 2.0')
+    # 窗口不可扩大
+    # window.resizable(0,0)
+    # 窗口按比例扩大, 暂时还没搞懂
+    
+    # 创建主菜单
+    mainMenu = tk.Menu(window)
+    ## 创建file菜单及其子菜单
+    fileMenu = tk.Menu(mainMenu,tearoff=False)
+    fileMenu.add_command(label='New')
+    fileMenu.add_command(label='Open')
+    fileMenu.add_command(label='Close')
+    fileMenu.add_command(label='Quit',command=window.quit)
+    mainMenu.add_cascade(label='File',menu=fileMenu)
+    # 创建edit菜单
+    mainMenu.add_cascade(label='Edit')
+    # 创建window菜单
+    mainMenu.add_cascade(label='Window')
+    # 创建game菜单及其子菜单，所有的游戏源码也放在scripts文件夹里面了
+    gameMenu = tk.Menu(mainMenu,tearoff=False)
+    def doGomoku():
+        try:
+            os.popen(f'python ./scripts/gomoku.py')
+        except:
+            pass                
+    gameMenu.add_command(label='五子棋',command=doGomoku)
+    def doSnake():
+        try:
+            os.popen(f'python ./scripts/snake.py')
+        except:
+            pass                
+    gameMenu.add_command(label='贪吃蛇',command=doSnake)
+    mainMenu.add_cascade(label='Game',menu=gameMenu)
+    # 创建help菜单及其子菜单
+    helpMenu = tk.Menu(mainMenu,tearoff=False)
+    def doInfo():
+        tk.messagebox.showinfo(title='About SmallTools',message='A small bioinformatic tool for biologier.\nVersin 1.3')
+    helpMenu.add_command(label='About',command=doInfo)
+    helpMenu.add_command(label='Update')
+    mainMenu.add_cascade(label='Help',menu=helpMenu)
+    # 菜单生效
+    window.config(menu=mainMenu)
+
+
+    tabControl = ttk.Notebook(window) # 创建选项卡对象
+    tabControl.pack()
+    # 选项卡blastGUI
+    root = tk.Frame(tabControl) # 新建选项卡1
+    root.pack(side='top')
+    tabControl.add(root, text='BlastGUI') # 添加选项卡1至选项卡对象中
+    blastGUI(root)
+    # 选项卡pyGame
+    root1 = tk.Frame(tabControl) # 新建选项卡2
+    root1.pack(side='top')
+    tabControl.add(root1,text='pyGame') # 添加选项卡2至选项卡对象中
+    game(root1)
+    
+    window.mainloop()
