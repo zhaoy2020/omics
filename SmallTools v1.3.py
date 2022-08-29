@@ -201,24 +201,52 @@ if __name__ == '__main__':
     # window = MainWindow()
     # create root window
     window = tk.Tk()
-    window.title('SmallTools version 2.0')
+    window.title('SmallTools V1.3')
     # 窗口不可扩大
+    window.geometry("300x300") # x必须小写
     # window.resizable(0,0)
     # 窗口按比例扩大, 暂时还没搞懂
     
     # 创建主菜单
     mainMenu = tk.Menu(window)
-    ## 创建file菜单及其子菜单
+# =============================================================================
+    ## 创建菜单及其子菜单
     fileMenu = tk.Menu(mainMenu,tearoff=False)
-    fileMenu.add_command(label='New')
-    fileMenu.add_command(label='Open')
-    fileMenu.add_command(label='Close')
-    fileMenu.add_command(label='Quit',command=window.quit)
-    mainMenu.add_cascade(label='File',menu=fileMenu)
-    # 创建edit菜单
-    mainMenu.add_cascade(label='Edit')
-    # 创建window菜单
-    mainMenu.add_cascade(label='Window')
+    def lanuchBlastInter():
+        # 创建Toplevel窗口 窗口
+        blastInter = tk.Toplevel()
+        blastInter.resizable(0,0)
+        tabControl = ttk.Notebook(blastInter) # 创建选项卡对象
+        tabControl.pack()
+        # 选项卡blastGUI 选项卡
+        root = tk.Frame(tabControl) # 新建选项卡1
+        root.pack(side='top')
+        tabControl.add(root, text='BlastGUI') # 添加选项卡1至选项卡对象中
+        blastGUI(root)
+        # 选项卡other 选项卡
+        root1 = tk.Frame(tabControl) # 新建选项卡2
+        root1.pack(side='top')
+        tabControl.add(root1,text='Other Notebook') # 添加选项卡2至选项卡对象中
+        game(root1)
+    fileMenu.add_command(label='Blast',command=lanuchBlastInter)
+    
+    def lanuchOtherInter():
+        otherInter = tk.Toplevel()
+    fileMenu.add_command(label='Other',command=lanuchOtherInter)
+    mainMenu.add_cascade(label='BlastGUI',menu=fileMenu)
+    # 创建菜单
+    goMenu = tk.Menu(mainMenu,tearoff=False)
+    goMenu.add_command(label='idmapping')
+    goMenu.add_command(label='interproscan')
+    goMenu.add_command(label='eggnog')
+    mainMenu.add_cascade(label='Go',menu=goMenu)
+# =============================================================================
+    # 创建菜单
+    mainMenu.add_cascade(label='KEGG')
+# =============================================================================
+    # 创建菜单
+    mainMenu.add_cascade(label='COG')
+# =============================================================================
     # 创建game菜单及其子菜单，所有的游戏源码也放在scripts文件夹里面了
     gameMenu = tk.Menu(mainMenu,tearoff=False)
     def doGomoku():
@@ -247,21 +275,27 @@ if __name__ == '__main__':
     helpMenu.add_command(label='About',command=doInfo)
     helpMenu.add_command(label='Update')
     mainMenu.add_cascade(label='Help',menu=helpMenu)
+# =============================================================================
+
     # 菜单生效
     window.config(menu=mainMenu)
-
-
-    tabControl = ttk.Notebook(window) # 创建选项卡对象
-    tabControl.pack()
-    # 选项卡blastGUI
-    root = tk.Frame(tabControl) # 新建选项卡1
-    root.pack(side='top')
-    tabControl.add(root, text='BlastGUI') # 添加选项卡1至选项卡对象中
-    blastGUI(root)
-    # 选项卡pyGame
-    root1 = tk.Frame(tabControl) # 新建选项卡2
-    root1.pack(side='top')
-    tabControl.add(root1,text='pyGame') # 添加选项卡2至选项卡对象中
-    game(root1)
+    
+    # 主界面
+    mainInter = tk.Frame(window)
+    mainInter.pack(side='top',expand='yes',anchor='center',fill='both')
+    poem = '''
+    北国风光，千里冰封，万里雪飘。
+    望长城内外，惟余莽莽；
+    大河上下，顿失滔滔。
+    山舞银蛇，原驰蜡象，欲与天公试比高。
+    须晴日，看红装素裹，分外妖娆。
+    江山如此多娇，引无数英雄竞折腰。
+    惜秦皇汉武，略输文采；
+    唐宗宋祖，稍逊风骚。
+    一代天骄，成吉思汗，只识弯弓射大雕。
+    俱往矣，数风流人物，还看今朝。
+    '''
+    tk.Label(mainInter, text=poem,justify='left').pack(side='top')
+    tk.Label(mainInter, text='--毛泽东',justify='right').pack()
     
     window.mainloop()
