@@ -14,7 +14,6 @@ import tkinter.ttk as ttk
 import pandas as pd
 import os
 
-from scripts import gomoku
 
 
 def blastGUI(root):
@@ -224,16 +223,22 @@ if __name__ == '__main__':
     gameMenu = tk.Menu(mainMenu,tearoff=False)
     def doGomoku():
         try:
-            os.popen(f'python ./scripts/gomoku.py')
+            os.popen(f'python ./scripts/game/gomoku.py')
         except:
             pass                
     gameMenu.add_command(label='五子棋',command=doGomoku)
     def doSnake():
         try:
-            os.popen(f'python ./scripts/snake.py')
+            os.popen(f'python ./scripts/game/snake.py')
         except:
             pass                
     gameMenu.add_command(label='贪吃蛇',command=doSnake)
+    def doFlyBrid():
+        try:
+            os.popen(f'cd scripts/game/flyBrid/ && python flappy.py')
+        except:
+            pass                
+    gameMenu.add_command(label='小飞鸟',command=doFlyBrid)
     mainMenu.add_cascade(label='Game',menu=gameMenu)
     # 创建help菜单及其子菜单
     helpMenu = tk.Menu(mainMenu,tearoff=False)
