@@ -1,9 +1,13 @@
 # 简述
 # 在线安装aspera
+```shell
 conda install aspera-cli
+```
 # 本地安装aspera
 ## 先从anaconda下载aspera-cli:https://anaconda.org/HCC/aspera-cli/files
+```shell
 conda install aspera-cli-3.9.6-h5e1937b_0.tar.bz2i
+```
 
 # 使用
 ```python
