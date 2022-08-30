@@ -9,6 +9,7 @@ import tkinter.ttk as ttk
 
 def lanuchIdmappintInter():
     idmappingInter = tk.Toplevel()
+    
 
 if __name__ == "__main__":
     '''

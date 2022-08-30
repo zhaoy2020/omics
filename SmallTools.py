@@ -17,6 +17,8 @@ from scripts.BlastGUI.Other import lanuchOtherInter
 
 from scripts.GO.Idmapping import lanuchIdmappintInter
 
+from scripts.COG.Cog import lanuchCogInter
+
 from scripts.Games.Game import doGomoku
 from scripts.Games.Game import doSnake
 from scripts.Games.Game import doFlyBrid
@@ -53,7 +55,9 @@ if __name__ == '__main__':
     mainMenu.add_cascade(label='KEGG')
 # =============================================================================
     # 创建菜单
-    mainMenu.add_cascade(label='COG')
+    cogMenu = tk.Menu(mainMenu,tearoff=False)
+    cogMenu.add_command(label='cog',command=lanuchCogInter)
+    mainMenu.add_cascade(label='COG', menu=cogMenu)
 # =============================================================================
     # 创建game菜单及其子菜单，所有的游戏源码也放在scripts文件夹里面了
     gameMenu = tk.Menu(mainMenu,tearoff=False)
