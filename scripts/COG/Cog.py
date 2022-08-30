@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
+import pandas as pd
 
 def lanuchCogInter():
     cogGUI = tk.Toplevel()
@@ -22,11 +23,11 @@ def lanuchCogInter():
 #     绘图函数部分
 # =============================================================================
     fig = Figure(figsize=(5, 4), dpi=100)
-    t = np.arange(0, 3, .01)
-    ax = fig.add_subplot()
-    line, = ax.plot(t, 2 * np.sin(2 * np.pi * t))
-    ax.set_xlabel("time [s]")
-    ax.set_ylabel("f(t)")
+    # ax = fig.add_subplot()
+    # t = np.arange(0, 3, .01)
+    # line, = ax.plot(t, 2 * np.sin(2 * np.pi * t))
+    # ax.set_xlabel("time [s]")
+    # ax.set_ylabel("f(t)")
 # =============================================================================
 #     绘图
 # =============================================================================
@@ -40,25 +41,89 @@ def lanuchCogInter():
     ## 数据
     dtLbFrame = tk.LabelFrame(ctrLbFrame,text='数据')
     dtLbFrame.pack(side='top',anchor='n')
-    xLabel = tk.Label(dtLbFrame,text='x')
-    xLabel.grid(row=1,column=0)
-    xEntry = ttk.Combobox(dtLbFrame)
-    xEntry.grid(row=1,column=1)
+    tk.Label(dtLbFrame,text='Data').grid(row=1,column=0)
     
-    yLabel = tk.Label(dtLbFrame,text='y')
-    yLabel.grid(row=2,column=0)
-    yEntry = ttk.Combobox(dtLbFrame)
-    yEntry.grid(row=2,column=1)
+    dataPath = tk.StringVar()
+    dtEntry = tk.Entry(dtLbFrame,textvariable=dataPath)
+    dtEntry.grid(row=1,column=1)
+    def openData():
+        dataPath.set(tk.filedialog.askopenfilename())
+    dtButton = tk.Button(dtLbFrame,text='File',command=openData)
+    dtButton.grid(row=1,column=2)
+    tk.Label(dtLbFrame,text='Sep').grid(row=2,column=0)
+    
+    dataType = tk.StringVar()
+    dtCombobox = ttk.Combobox(dtLbFrame,textvariable=dataType,values=("tsv", "csv","excel"))
+    dtCombobox.grid(row=2,column=1)
+    
+    def doRead():
+        global df
+        if dataType.get() == 'tsv':
+            try:
+                df = pd.read_table(dataPath.get())
+            except:
+                pass
+        elif dataType.get() == 'csv':
+            try:
+                df = pd.read_csv(dataPath.get())
+            except:
+                pass
+        elif dataType.get() == 'excel':
+            try:
+                df = pd.read_excel(dataPath.get())
+            except:
+                pass
+        else:
+            tk.messagebox.showerror(title='Error',message='文件格式不支持')
+        print(df)
+        xCombobox['values'] = tuple(df.columns)
+        yCombobox['values'] = tuple(df.columns)
+    readButton = tk.Button(dtLbFrame,text='Read',command=doRead)
+    readButton.grid(row=2,column=2)
+    
+    
     # 调参
     prLbFrame = tk.LabelFrame(ctrLbFrame,text='调参')
     prLbFrame.pack(side='top',anchor='n')
-    tk.Label(prLbFrame,text='hug').grid(row=1,column=0)
-    colorCombobox = ttk.Combobox(prLbFrame)
-    colorCombobox.grid(row=1,column=1)
     
-    tk.Label(prLbFrame,text='color').grid(row=2,column=0)
+    xLabel = tk.Label(prLbFrame,text='x')
+    xLabel.grid(row=1,column=0)
+    xCombobox = ttk.Combobox(prLbFrame)
+    xCombobox.grid(row=1,column=1)
+    
+    yLabel = tk.Label(prLbFrame,text='y')
+    yLabel.grid(row=2,column=0)
+    yCombobox = ttk.Combobox(prLbFrame)
+    yCombobox.grid(row=2,column=1)
+    
+    tk.Label(prLbFrame,text='hug').grid(row=3,column=0)
     colorCombobox = ttk.Combobox(prLbFrame)
-    colorCombobox.grid(row=2,column=1)
+    colorCombobox.grid(row=3,column=1)
+    
+    tk.Label(prLbFrame,text='color').grid(row=4,column=0)
+    colorCombobox = ttk.Combobox(prLbFrame)
+    colorCombobox.grid(row=4,column=1)
+    def doClear():
+        fig.clf()
+        fig.canvas.draw()
+    tk.Button(prLbFrame,text='Clear',command=doClear).grid(row=5,column=0)
+    def doDraw():
+        ax = fig.add_subplot()
+        t = np.arange(0, 3, .01)
+        line, = ax.plot(t, 2 * np.sin(2 * np.pi * t))
+        ax.set_xlabel("time [s]")
+        ax.set_ylabel("f(t)")
+        fig.canvas.draw() # 注意，此步很重要        
+    tk.Button(prLbFrame,text='Draw',command=doDraw).grid(row=5,column=1)
+    def doDraw1():
+        fig.clf()
+        ax = fig.add_subplot()
+        t = np.arange(0, 3, .01)
+        line, = ax.plot(t, 10 * np.sin(2 * np.pi * t))
+        ax.set_xlabel("time [s]")
+        ax.set_ylabel("f(t)")
+        fig.canvas.draw() # 注意，此步很重要  
+    tk.Button(prLbFrame,text='Draw1',command=doDraw1).grid(row=5,column=2)
 
     
     
