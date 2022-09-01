@@ -58,23 +58,17 @@ def lanuchCogInter():
     
     def doRead():
         global df
-        if dataType.get() == 'tsv':
-            try:
+        try:
+            if dataType.get() == 'tsv':
                 df = pd.read_table(dataPath.get())
-            except:
-                pass
-        elif dataType.get() == 'csv':
-            try:
+            elif dataType.get() == 'csv': 
                 df = pd.read_csv(dataPath.get())
-            except:
-                pass
-        elif dataType.get() == 'excel':
-            try:
+            elif dataType.get() == 'excel':
                 df = pd.read_excel(dataPath.get())
-            except:
-                pass
-        else:
-            tk.messagebox.showerror(title='Error',message='文件格式不支持')
+            else:
+                tk.messagebox.showerror(title='Error',message='请确认文本格式')
+        except:
+            tk.messagebox.showerror(title='Error',message='格式错误')
         print(df)
         xCombobox['values'] = tuple(df.columns)
         yCombobox['values'] = tuple(df.columns)
@@ -108,6 +102,7 @@ def lanuchCogInter():
         fig.canvas.draw()
     tk.Button(prLbFrame,text='Clear',command=doClear).grid(row=5,column=0)
     def doDraw():
+        fig.clf()
         ax = fig.add_subplot()
         t = np.arange(0, 3, .01)
         line, = ax.plot(t, 2 * np.sin(2 * np.pi * t))
@@ -115,7 +110,7 @@ def lanuchCogInter():
         ax.set_ylabel("f(t)")
         fig.canvas.draw() # 注意，此步很重要        
     tk.Button(prLbFrame,text='Draw',command=doDraw).grid(row=5,column=1)
-    def doDraw1():
+    def doDemo():
         fig.clf()
         ax = fig.add_subplot()
         t = np.arange(0, 3, .01)
@@ -123,7 +118,7 @@ def lanuchCogInter():
         ax.set_xlabel("time [s]")
         ax.set_ylabel("f(t)")
         fig.canvas.draw() # 注意，此步很重要  
-    tk.Button(prLbFrame,text='Draw1',command=doDraw1).grid(row=5,column=2)
+    tk.Button(prLbFrame,text='Demo',command=doDemo).grid(row=5,column=2)
 
     
     

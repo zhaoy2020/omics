@@ -33,7 +33,7 @@ if __name__ == '__main__':
     window.title('SmallTools V1.3')
     # 窗口不可扩大
     window.geometry("300x300") # x必须小写
-    # window.resizable(0,0)
+    window.resizable(0,0)
     # 窗口按比例扩大, 暂时还没搞懂
     
     # 创建主菜单
