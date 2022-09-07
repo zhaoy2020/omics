@@ -66,7 +66,7 @@ def blastGUI(root):
     outputPathButton.grid(row=3, column=2, sticky='w')
     
     def formatDb():
-        makedb = "makeblastdb.exe -dbtype "+dbtype.get()+" -in "+ dbFilePath.get()+" -parse_seqids -out "+os.path.join(os.path.dirname(dbFilePath.get()),os.path.basename(dbFilePath.get()).split('.')[0])
+        makedb = "makeblastdb.exe -dbtype "+dbType.get()+" -in "+ dbFilePath.get()+" -parse_seqids -out "+os.path.join(os.path.dirname(dbFilePath.get()),os.path.basename(dbFilePath.get()).split('.')[0])
         print("start:\n",makedb)
         
         logText.insert("end", makedb) # 在文本末尾插入字符
