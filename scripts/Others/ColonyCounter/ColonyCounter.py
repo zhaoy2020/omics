@@ -37,6 +37,9 @@ def lanuchColonyCounterInter():
     canvas.draw()
     canvas.get_tk_widget().pack(side='top', fill='both')
     
+    
+    
+    
     # 参数区
     ctrLbFrame = tk.LabelFrame(GUI,text='参数')
     ctrLbFrame.pack(side='left',anchor='n')
@@ -99,10 +102,12 @@ def lanuchColonyCounterInter():
     tk.Label(prLbFrame,text='color').grid(row=4,column=0)
     colorCombobox = ttk.Combobox(prLbFrame)
     colorCombobox.grid(row=4,column=1)
+    
     def doClear():
         fig.clf()
         fig.canvas.draw()
     tk.Button(prLbFrame,text='Clear',command=doClear).grid(row=5,column=0)
+    
     def doDraw():
         fig.clf()
         ax = fig.add_subplot()
@@ -112,6 +117,7 @@ def lanuchColonyCounterInter():
         ax.set_ylabel("f(t)")
         fig.canvas.draw() # 注意，此步很重要        
     tk.Button(prLbFrame,text='Draw',command=doDraw).grid(row=5,column=1)
+    
     def doDemo():
         fig.clf()
         ax = fig.add_subplot()
@@ -122,8 +128,6 @@ def lanuchColonyCounterInter():
         fig.canvas.draw() # 注意，此步很重要  
     tk.Button(prLbFrame,text='Demo',command=doDemo).grid(row=5,column=2)
 
-    
-    
 
 if __name__ == "__main__":
     '''
