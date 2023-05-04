@@ -18,3 +18,13 @@ if __name__ == "__main__":
     '''
     df = pd.read_excel('tem.xlsx')
     
+    
+    def simpleFunction(a:int, b:float, c:str, *d:list, **e:dict) -> (int, int, str):
+        '''
+        A simple demo about the annotation style of Python function
+        '''
+        sumResult = a + b + len(c)
+        numOFagruments = 3
+        return sumResult, numOFagruments, c
+    
+    print(simpleFunction(1, 2.5, "hellow", ))

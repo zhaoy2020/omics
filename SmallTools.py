@@ -19,6 +19,8 @@ from scripts.GO.Idmapping import lanuchIdmappintInter
 
 from scripts.COG.Cog import lanuchCogInter
 
+from scripts.Others.ColonyCounter.ColonyCounter import lanuchColonyCounterInter
+
 from scripts.Games.Game import doGomoku
 from scripts.Games.Game import doSnake
 from scripts.Games.Game import doFlyBrid
@@ -32,8 +34,8 @@ if __name__ == '__main__':
     window = tk.Tk()
     window.title('SmallTools V1.3')
     # 窗口不可扩大
-    window.geometry("300x300") # x必须小写
-    window.resizable(0,0)
+    window.geometry("600x600") # x必须小写
+    # window.resizable(0,0)
     # 窗口按比例扩大, 暂时还没搞懂
     
     # 创建主菜单
@@ -50,14 +52,24 @@ if __name__ == '__main__':
     goMenu.add_command(label='interproscan')
     goMenu.add_command(label='eggnog')
     mainMenu.add_cascade(label='GO',menu=goMenu)
+    
 # =============================================================================
-    # 创建菜单
+    # 创建KEGG菜单
     mainMenu.add_cascade(label='KEGG')
+    
 # =============================================================================
-    # 创建菜单
+    # 创建COG及其子菜单
     cogMenu = tk.Menu(mainMenu,tearoff=False)
     cogMenu.add_command(label='cog',command=lanuchCogInter)
     mainMenu.add_cascade(label='COG', menu=cogMenu)
+    
+# =============================================================================
+    # 创建Others及其子菜单
+    othersMenu = tk.Menu(mainMenu,tearoff=False)
+    othersMenu.add_command(label='Colony counter',command=lanuchColonyCounterInter)
+    othersMenu.add_command(label='Others',command=None)
+    mainMenu.add_cascade(label='Others', menu=othersMenu)
+    
 # =============================================================================
     # 创建game菜单及其子菜单，所有的游戏源码也放在scripts文件夹里面了
     gameMenu = tk.Menu(mainMenu,tearoff=False)
@@ -65,9 +77,10 @@ if __name__ == '__main__':
     gameMenu.add_command(label='贪吃蛇',command=doSnake)
     gameMenu.add_command(label='小飞鸟',command=doFlyBrid)
     mainMenu.add_cascade(label='Games',menu=gameMenu)
+    
     # 创建help菜单及其子菜单
     helpMenu = tk.Menu(mainMenu,tearoff=False)
-    def doInfo():
+    def doInfo()-> None:
         tk.messagebox.showinfo(title='About SmallTools',message='A small bioinformatic tool for biologier.\nVersin 1.3')
     helpMenu.add_command(label='About',command=doInfo)
     helpMenu.add_command(label='Update')

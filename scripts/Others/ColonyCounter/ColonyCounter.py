@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 30 13:20:15 2022
+Created on Thu May  4 18:26:47 2023
 
 @author: zhao
 """
@@ -8,17 +8,18 @@ Created on Tue Aug 30 13:20:15 2022
 import tkinter as tk
 import tkinter.ttk as ttk
 import matplotlib.pyplot as plt
+
 # 创建画布需要的库
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
 import pandas as pd
 
-def lanuchCogInter():
-    cogGUI = tk.Toplevel()
+def lanuchColonyCounterInter():
+    GUI = tk.Toplevel()
     
     # 绘图区
-    pictureLbFrame=tk.LabelFrame(cogGUI,text='绘图')
+    pictureLbFrame=tk.LabelFrame(GUI,text='绘图')
     pictureLbFrame.pack(side='left')
 # =============================================================================
 #     绘图函数部分
@@ -37,7 +38,7 @@ def lanuchCogInter():
     canvas.get_tk_widget().pack(side='top', fill='both')
     
     # 参数区
-    ctrLbFrame = tk.LabelFrame(cogGUI,text='参数')
+    ctrLbFrame = tk.LabelFrame(GUI,text='参数')
     ctrLbFrame.pack(side='left',anchor='n')
     ## 数据
     dtLbFrame = tk.LabelFrame(ctrLbFrame,text='数据')
