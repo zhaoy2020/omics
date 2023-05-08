@@ -34,19 +34,20 @@ if __name__ == '__main__':
     window = tk.Tk()
     window.title('SmallTools V1.3')
     # 窗口不可扩大
-    window.geometry("600x600") # x必须小写
+    window.geometry("350x300") # x必须小写
     # window.resizable(0,0)
     # 窗口按比例扩大, 暂时还没搞懂
     
     # 创建主菜单
     mainMenu = tk.Menu(window)
 # =============================================================================
-    ## 创建菜单及其子菜单
+    ## 创建BlastGUI菜单及其子菜单
     fileMenu = tk.Menu(mainMenu,tearoff=False)
     fileMenu.add_command(label='Blast',command=lanuchBlastInter)
     fileMenu.add_command(label='Other',command=lanuchOtherInter)
     mainMenu.add_cascade(label='BlastGUI',menu=fileMenu)
-    # 创建菜单
+    
+    # 创建GO菜单及其子菜单
     goMenu = tk.Menu(mainMenu,tearoff=False)
     goMenu.add_command(label='idmapping',command=lanuchIdmappintInter)
     goMenu.add_command(label='interproscan')
